@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <cassert>
+#include <string>
+#include <functional>
 #include "hash_table.h"
 
 using namespace std;
@@ -26,6 +28,26 @@ unsigned int StudentRecord::hash() const {
   return id;
 }
 
+struct MonsterRecord{
+  std::string name;
+  unsigned int AC;
+  unsigned int HP;
+  unsigned int speed;
+  float CR;
+
+  const unsigned int hash() const;
+  bool operator!=(const MonsterRecord& rhs) const;
+};
+
+const unsigned int MonsterRecord::hash() const{
+  std::hash<std::string> Hash;
+  return Hash(name);
+}
+
+bool MonsterRecord::operator!=(const MonsterRecord& rhs) const{
+  std::hash<std::string> Hash;
+  return Hash(name) != Hash(rhs.name);
+}
 
 bool StudentRecord::operator!=(const StudentRecord& rhs) const {
   return id != rhs.id;

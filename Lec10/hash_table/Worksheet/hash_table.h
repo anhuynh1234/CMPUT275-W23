@@ -53,6 +53,16 @@ public:
   // (in no particular order).
   DynamicArray<T> getItemsArray() const;
 
+  // clear the entire array
+  void clear();
+
+  //return maximum items in a bucket
+  const int getMaxLoad() const;
+
+  //update the item inside hash table, replace the 
+  //existing item if matched
+  void update(const T& item);
+
 private:
   LinkedList<T> *table; // start of the array of linked lists (buckets)
   unsigned int numItems; // # of items in the table
@@ -186,6 +196,36 @@ unsigned int HashTable<T>::getBucket(const T& item) const {
   return item.hash() % tableSize;
 }
 
+template <typename T>
+void HashTable<T>::clear(){
 
+  for(int i = 0; i < tableSize; i++){
+    table[i].clear();
+  }
+  numItems = 0;
+}
+
+template <typename T>
+const int HashTable<T>::getMaxLoad() const{
+  int maxSize = 0;
+  for(int i = 0; i < tableSize; i++){
+    if(table[i].size() > maxSize){
+      maxSize = table[i].size();
+    }
+  }
+  return maxSize;
+}
+
+template <typename T>
+void HashTable<T>::update(const T& item){
+  unsigned int bucket = getBucket(item);
+  if(table[bucket].find(item) != NULL){
+    ListNode<T>* node = table[bucket].find(item);
+    node->item = item;
+  }else{
+    table[bucket].insertBack(item);
+    numItems++;
+  }
+}
 
 #endif
