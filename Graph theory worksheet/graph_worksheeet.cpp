@@ -1,5 +1,6 @@
 #include <iostream>
 #include "graph.h"
+#include "digraph.h"
 // #include "digraph.h"
 
 using namespace std;
