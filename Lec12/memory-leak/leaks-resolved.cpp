@@ -1,5 +1,6 @@
 /*
-    An illustration of 3 types of memory leaks
+    An illustration of 3 types of memory leaks 
+    And how they are resolved
 
     Course: CMPUT 275
     Omid Ardakanian, University of Alberta (2023)
@@ -13,27 +14,24 @@ int* leaky();
 void dummy();
 
 int main() {
-    // memory leak - still reachable 
-    // still can be freed, e.g. if dummy return the static variable
     dummy();
     
-    // memory leak
-    int temp;
+    int* temp;
     for (int i = 0; i < 100; i++) {
-        temp = *leaky();
+        temp = leaky();
         // pointer to the allocated memory will be lost
         
-        cout << "code is: " << temp << endl;
+        cout << "code is: " << *temp << endl;
+        delete temp;
     }
 
-    // memory leak
     int** a = new int*[2];
     a[0] = new int;
     a[1] = new int;
     delete a[0];
+    delete a[1];
 
-    // a is definitely lost
-    // a[1] is indirectly lost
+    delete [] a;
     a = nullptr;
 
     return 0;
@@ -57,4 +55,5 @@ void dummy() {
     }
 
     cout << "code is: " << *ptr << endl;
+    delete [] ptr;
 }
