@@ -59,7 +59,7 @@ public:
 private:
   // with this representation the amortized time for 
   // finding or adding a vertex or an edge is O(1)
-  unordered_map<int, unordered_set<int>> nbrs;
+  unordered_map<int, unordered_set<int> > nbrs;
 };
 
 #endif
