@@ -19,8 +19,12 @@ int main() {
 
   char msg[_MSG_MAX_LENGTH];
   char current;
-  int idx;
+  int idx = 0;
 
+  if(fd == -1){
+    std::cerr << "Error: cannot open anmed pipe:" << std::endl;
+    unlink(pipename);
+  }
   /* TODO: While '\n' is not read from the pipe,
     read data, one character at a time, from the pipe
     and store it in msg, starting from msg[0].
@@ -28,7 +32,24 @@ int main() {
     and start populating msg from index 0 again
     Continue until the received msg is "quit"
   */
+  while(true){
+    memset(msg, 0, _MSG_MAX_LENGTH);
 
+    read(fd, &current, 1);
+
+    if(current != '\n'){
+      msg[idx] = current;
+      idx++;
+    }else if(current == '\n'){
+      idx = 0;
+      cout << msg << endl;
+    }
+
+    if(!strcmp(msg, "quit")){
+      break;
+    }
+  }
+  
   // close pipe from the write end 
   close(fd);
 
