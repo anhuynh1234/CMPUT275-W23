@@ -26,9 +26,23 @@ int main() {
   cout << "Named pipe opened for reading..." << endl;
 
   char msg[_MSG_MAX_LENGTH];
-
+  int idx = 0;
+  char current;
   // write your code here
+  while(true){
+    read(fd, &current, 1);
 
+    if(current == '\0'){
+      msg[idx] = '\0';
+      break;
+    }else{
+      msg[idx] = current;
+      idx++;
+    }
+  }
+string number(msg);
+int numb = stoi(number);
+std::cout << numb/2 << std::endl;
   // close pipe from the write end 
   close(fd);
 
